@@ -59,7 +59,7 @@ export default{
 }
 </script>
 
-<style lang='stylus' rel='stylesheet/stylus'>
+<style scoped lang='stylus' rel='stylesheet/stylus'>
 @import "../../common/stylus/variable.styl"
   .slide-enter-active,.slide-leave-active
     transition all 0.3s
