@@ -57,3 +57,39 @@ export function prefixStyle(style) {
   return vendor + style.charAt(0).toUpperCase() + style.substr(1)
 }
 
+//侦听事件
+export function on(ele, ev, handler) {
+  if (ele.addEventListener) {
+    ele.addEventListener(ev, handler, false)
+  } else {
+    ele.attachEvent('on' + ev, function () {
+      fn.call(handler);
+    })
+  }
+}
+
+//取消事件
+export function off(ele, ev, handler) {
+  if (ele.removeEventListener) {
+    ele.removeEventListener(ev, handler, false)
+  } else {
+    ele.detachEvent('on' + ev, function () {
+      fn.call(handler);
+    })
+  }
+}
+
+//获取样式
+export function getStyle(dom, attr) {
+
+  return dom.currentStyle ? dom.currentStyle[attr] : getComputedStyle(dom, false)[attr];
+
+};
+
+
+export function view() {
+  return {
+    w: document.documentElement.clientWidth,
+    h: document.documentElement.clientHeight
+  };
+}

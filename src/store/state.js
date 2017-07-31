@@ -1,15 +1,19 @@
-/**
- * Created by Guo on 2017/7/27 0027.
- */
-import {playMode} from '../common/js/config'
-const state={
-  singer:{},
-  playing:false,
-  fullScreen:false,
-  playList:[],
-  sequenceList:[],
-  mode:playMode.sequence,
-  currentIndex:-1
+import {playMode} from 'common/js/config'
+import {loadSearch, loadPlay, loadFavorite} from 'common/js/cache'
+
+const state = {
+  singer: {},
+  playing: false,
+  fullScreen: false,
+  playlist: [],
+  sequenceList: [],
+  mode: playMode.sequence,
+  currentIndex: -1,
+  disc: {},
+  topList: {},
+  searchHistory: loadSearch(),
+  playHistory: loadPlay(),
+  favoriteList: loadFavorite()
 }
 
-export default state;
+export default state

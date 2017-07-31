@@ -23,23 +23,48 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 
-var apiRoutes = express.Router();
+var apiRoutes = express.Router()
 
-apiRoutes.get('/getDiscList',function (req,res) {
-  var url='https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg';
-  axios.get(url,{
-    headers:{
-      referer:'https://c.y.qq.com/',
-      host:'c.y.qq.com'
+apiRoutes.get('/getDiscList', function (req, res) {
+  var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+  axios.get(url, {
+    headers: {
+      referer: 'https://c.y.qq.com/',
+      host: 'c.y.qq.com'
     },
-    params:req.query
-  }).then((response)=>{
+    params: req.query
+  }).then((response) => {
     res.json(response.data)
-  }).catch((e)=>{
+  }).catch((e) => {
     console.log(e)
   })
-});
-app.use('/api',apiRoutes)
+})
+
+apiRoutes.get('/lyric', function (req, res) {
+  var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+
+  axios.get(url, {
+    headers: {
+      referer: 'https://c.y.qq.com/',
+      host: 'c.y.qq.com'
+    },
+    params: req.query
+  }).then((response) => {
+    var ret = response.data
+    if (typeof ret === 'string') {
+      var reg = /^\w+\(({[^()]+})\)$/
+      var matches = ret.match(reg)
+      if (matches) {
+        ret = JSON.parse(matches[1])
+      }
+    }
+    res.json(ret)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+app.use('/api', apiRoutes)
 
 var compiler = webpack(webpackConfig)
 
@@ -49,8 +74,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {},
-  heartbeat: 2000
+  log: () => {}
 })
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
